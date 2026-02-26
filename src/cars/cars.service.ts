@@ -1,19 +1,20 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { UpdateCarDto } from './dto/update-car.dto';
+import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class CarsService {
   private cars = [
-    { id: 1, brand: 'Toyota', model: 'Corolla' },
-    { id: 2, brand: 'Honda', model: 'Civic' },
-    { id: 3, brand: 'Jeep', model: 'Cherokee' },
+    { id: uuid(), brand: 'Toyota', model: 'Corolla' },
+    { id: uuid(), brand: 'Honda', model: 'Civic' },
+    { id: uuid(), brand: 'Jeep', model: 'Cherokee' },
   ];
 
   findAll() {
     return this.cars;
   }
 
-  findOneById(id: number) {
+  findOneById(id: string) {
     const car = this.cars.find((car) => car.id === id);
 
     if (!car) {
@@ -23,7 +24,7 @@ export class CarsService {
     return car;
   }
 
-  update(id: number, updateCarDto: UpdateCarDto) {
+  update(id: string, updateCarDto: UpdateCarDto) {
     const carDB = this.findOneById(id);
 
     console.log('Datos entrantes (DTO):', updateCarDto);
@@ -45,7 +46,7 @@ export class CarsService {
     return carDB;
   }
 
-  delete(id: number) {
+  delete(id: string) {
     this.findOneById(id);
 
     this.cars = this.cars.filter((car) => car.id !== id);
